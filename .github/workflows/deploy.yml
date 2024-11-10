@@ -32,7 +32,11 @@ jobs:
 
       # Log in to DockerHub (using secrets)
       - name: Log in to DockerHub
-        run: echo "dckr_pat_U56lOmcv_0U-hJDLXZF7YeNW9Xo" | docker login -u "swayanshu2003" --password-stdin
+        uses: docker/login-action@v2
+        with:
+         username: ${{ secrets.DOCKERUSERNAME }}
+         password: ${{ secrets.DOCKERPAT }}
+
 
       # Build the Docker image
       - name: Build Docker image
