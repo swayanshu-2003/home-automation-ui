@@ -1,0 +1,43 @@
+name: Build and Push Docker Image
+
+# Trigger the workflow on push to the 'dev' branch
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  # Build and push Docker image
+  build-and-docker:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Set up Node.js environment
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      # Install dependencies
+      # - name: Install dependencies
+        # run: npm install --legacy-peer-deps
+
+      # Build the Next.js project
+      # - name: Build project
+      #   run: npm run build
+
+      # Log in to DockerHub (using secrets)
+      - name: Log in to DockerHub
+        run: echo "dckr_pat_U56lOmcv_0U-hJDLXZF7YeNW9Xo" | docker login -u "swayanshu2003" --password-stdin
+
+      # Build the Docker image
+      - name: Build Docker image
+        run: docker build -t swayanshu2003/home-automation:latest .
+
+      # Push the Docker image to DockerHub
+      - name: Push Docker image
+        run: docker push swayanshu2003/home-automation:latest
