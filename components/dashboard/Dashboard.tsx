@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { db } from "@/database/db";
 import { ref, get, update } from "firebase/database";
-import { FiSun, FiMoon, FiWind, FiTv } from "react-icons/fi";
+import { FiSun, FiWind, FiTv } from "react-icons/fi";
 import { TfiLightBulb } from "react-icons/tfi";
 import { FaPowerOff } from "react-icons/fa";
 import { LuPowerOff } from "react-icons/lu";
