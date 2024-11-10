@@ -57,14 +57,7 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
     },
-    rules: {
-      "@typescript-eslint/no-explicit-any": "off", // Disables "no-explicit-any" errors
-      "@typescript-eslint/explicit-module-boundary-types": "off", // Disables module boundary type checking
-      "@typescript-eslint/no-unused-vars": "off", // Disables unused variable checking
-      // Add any other type-checking rules you want to disable
-      "@next/next/no-img-element": "off", // Disable warning for <img> elements if you don’t want to use <Image />
-      "jsx-a11y/alt-text": "off",
-    },
+    
   },
   plugins: [require("tailwindcss-animate")],
 } satisfies Config;

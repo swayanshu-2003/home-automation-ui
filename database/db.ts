@@ -12,7 +12,7 @@ const app = initializeApp(firebaseConfig);
 export const db = getDatabase(app);
 // export const auth = getAuth(app);
 
-// // Utility functions for authentication
+// // // Utility functions for authentication
 // export const signUp = async (name: string, email: string, password: string, profilePictureUrl?: string) => {
 //   try {
 //     const userCredential = await createUserWithEmailAndPassword(auth, email, password);

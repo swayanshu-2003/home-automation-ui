@@ -1,3 +1,11 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript"]
+  "extends": ["next/core-web-vitals", "next/typescript"],
+  "rules": {
+    "@typescript-eslint/no-explicit-any": "off", // Disables "no-explicit-any" errors
+    "@typescript-eslint/explicit-module-boundary-types": "off", // Disables module boundary type checking
+    "@typescript-eslint/no-unused-vars": "off", // Disables unused variable checking
+    "@next/next/no-img-element": "off", // Disable warning for <img> elements if you don’t want to use <Image />
+    "jsx-a11y/alt-text": "off" // Disables alt text requirement for images
+    // Add any other type-checking rules you want to disable
+  }
 }

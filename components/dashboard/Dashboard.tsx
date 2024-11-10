@@ -7,6 +7,9 @@ import { FiSun, FiWind, FiTv } from "react-icons/fi";
 import { TfiLightBulb } from "react-icons/tfi";
 import { FaPowerOff } from "react-icons/fa";
 import { LuPowerOff } from "react-icons/lu";
+import { useRouter } from "next/navigation";
+import logo from "@/assets/Logo.png";
+import axios from "axios";
 
 // Define devices array with labels, db_keys, and default values
 const initialDevices = [
@@ -19,6 +22,25 @@ const initialDevices = [
 const Home = () => {
   // State for devices
   const [devices, setDevices] = useState(initialDevices);
+  const [weatherData, setWeatherData] = useState<any>(null);
+  const router = useRouter();
+  useEffect(() => {
+    const isAuth: any = localStorage.getItem("token");
+    if (!isAuth) {
+      router.push("/login");
+    }
+  }, []);
+
+  useEffect(() => {
+    const fetchWeather = async () => {
+      const w: any = await axios.get(
+        "https://api.openweathermap.org/data/2.5/weather?q=Rourkela&appid=00c994865ee41240760fc956fd37835b"
+      );
+      console.log(w)
+      setWeatherData(w?.data);
+    };
+    fetchWeather();
+  }, []);
 
   // Fetch initial data from Firebase
   useEffect(() => {
@@ -72,49 +94,62 @@ const Home = () => {
     Fan: <FiWind className="w-8 h-8 text-white" />,
     Socket: <FiTv className="w-8 h-8 text-white" />,
   };
-
+  console.log(weatherData);
   return (
     <div className="flex flex-col items-center min-h-screen p-4 bg-[#1E2140] text-white">
       <div className="w-full max-w-md">
         <div className="flex items-center justify-between">
-          <button className="text-2xl">☰</button>
-          <img src="https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=250" className="w-10 h-10 bg-gray-400 rounded-full"/>
+          <button className="text-xl font-bold">Home Control</button>
+          <img src={logo?.src} className="w-14 h-14 rounded-full" />
         </div>
-        <h1 className="mt-6 text-2xl font-bold">Hello John 👋</h1>
+        <h1 className="mt-6 text-2xl font-bold">Hello Debasish 👋</h1>
         <p className="text-sm text-gray-300">Welcome to Home</p>
       </div>
-
-      <div className="w-full max-w-md p-4 mt-4 bg-[#2A2D50] rounded-lg">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <div className="w-12 h-12">
-              <img
-                src="https://img.icons8.com/ios/50/FFFFFF/cloud.png"
-                alt="Cloud Icon"
-              />
+      {weatherData !== null && (
+        <div className="w-full max-w-md p-4 mt-4 bg-[#2A2D50] rounded-lg">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <div className="w-12 h-12">
+                <img
+                  src={`https://openweathermap.org/img/wn/${weatherData.weather[0].icon}.png`}
+                  alt="Weather Icon"
+                />
+              </div>
+              <div>
+                <p className="text-lg font-semibold">
+                  {weatherData.weather[0].description}
+                </p>{" "}
+                {/* Weather description */}
+                <p className="text-sm text-gray-300">
+                  {weatherData.name}, {weatherData.sys.country}
+                </p>{" "}
+                {/* City and country */}
+              </div>
             </div>
-            <div>
-              <p className="text-lg font-semibold">Mostly Cloudy</p>
-              <p className="text-sm text-gray-300">Sydney, Australia</p>
+            <div className="text-4xl font-semibold">
+              {Math.round(weatherData.main.temp - 273.15)}°{" "}
+              {/* Temperature in Celsius */}
             </div>
           </div>
-          <div className="text-4xl font-semibold">22°</div>
+          <div className="flex justify-between mt-4 text-sm text-gray-300">
+            <p>
+              {Math.round(weatherData.main.feels_like - 273.15)}°C{" "}
+              <span className="font-semibold text-white">Feels Like</span>
+            </p>
+            <p>
+              0% <span className="font-semibold text-white">Precipitation</span>
+            </p>
+            <p>
+              {weatherData.main.humidity}%{" "}
+              <span className="font-semibold text-white">Humidity</span>
+            </p>
+            <p>
+              {Math.round(weatherData.wind.speed * 3.6)} km/h{" "}
+              <span className="font-semibold text-white">Wind</span>
+            </p>
+          </div>
         </div>
-        <div className="flex justify-between mt-4 text-sm text-gray-300">
-          <p>
-            27°C <span className="font-semibold text-white">Sensible</span>
-          </p>
-          <p>
-            4% <span className="font-semibold text-white">Precipitation</span>
-          </p>
-          <p>
-            66% <span className="font-semibold text-white">Humidity</span>
-          </p>
-          <p>
-            16 km/h <span className="font-semibold text-white">Wind</span>
-          </p>
-        </div>
-      </div>
+      )}
 
       <div className="w-full max-w-md mt-6">
         <h2 className="text-lg font-semibold">Your Devices</h2>
